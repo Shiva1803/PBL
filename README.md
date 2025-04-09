@@ -5,8 +5,9 @@ The project is trained on <a href = "https://www.kaggle.com/datasets/kazanova/se
 
 # Preview of the project
 <p align="center">
-  <img src="images/Preview.png" alt="Preview" height = "470" width="620"/>
+  <img src="images/Preview.png" alt="Preview" style="max-width: 100%; height: auto;" />
 </p>
+
 
 
 
