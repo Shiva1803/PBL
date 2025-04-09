@@ -4,4 +4,4 @@ It has been deployed via Streamlit.</p>
 
 
 # Preview of the project
-![Preview](images/preview.png)
+![Preview](images/Preview.png)
