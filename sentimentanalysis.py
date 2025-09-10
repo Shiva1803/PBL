@@ -17,13 +17,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import confusion_matrix, classification_report
 
-# dataset
 DATASET_COLUMNS  = ["sentiment", "ids", "date", "flag", "user", "text"]
 DATASET_ENCODING = "ISO-8859-1"
 dataset = pd.read_csv('/Users/shivanshtripathi/Documents/Coding/PBL/input/training.1600000.processed.noemoticon.csv',
                       encoding=DATASET_ENCODING , names=DATASET_COLUMNS)
 
-# Removing the unnecessary columns.
 dataset = dataset[['sentiment','text']]
 dataset['sentiment'] = dataset['sentiment'].replace(4,1)
 
@@ -32,20 +30,17 @@ ax = dataset.groupby('sentiment').count().plot(kind='bar', title='Distribution o
                                                legend=False)
 ax.set_xticklabels(['Negative','Positive'], rotation=0)'''
 
-# Storing data in lists.
 text, sentiment = list(dataset['text']), list(dataset['sentiment'])
 
-# Plotting the distribution for dataset.
 ax = dataset.groupby('sentiment').count().plot(kind='bar', title='Distribution of data', legend=False)
 ax.set_xticklabels(['Negative','Positive'], rotation=0)
 
-plt.show()  # ← Required to show plot window
+plt.show()
 
 print("\n Script ran successfully!")
 print("Sample of cleaned dataset:")
 print(dataset.head())
 
-# Defining dictionary containing all emojis with their meanings.
 emojis = {':)': 'smile', ':-)': 'smile', ';d': 'wink', ':-E': 'vampire', ':(': 'sad', 
           ':-(': 'sad', ':-<': 'sad', ':P': 'raspberry', ':O': 'surprised',
           ':-@': 'shocked', ':@': 'shocked',':-$': 'confused', ':\\': 'annoyed', 
@@ -53,7 +48,7 @@ emojis = {':)': 'smile', ':-)': 'smile', ';d': 'wink', ':-E': 'vampire', ':(': '
           '@@': 'eyeroll', ':-!': 'confused', ':-D': 'smile', ':-0': 'yell', 'O.o': 'confused',
           '<(-_-)>': 'robot', 'd[-_-]b': 'dj', ":'-)": 'sadsmile', ';)': 'wink', 
           ';-)': 'wink', 'O:-)': 'angel','O*-)': 'angel','(:-D': 'gossip', '=^.^=': 'cat'}
-## Defining set containing all stopwords in english.
+
 stopwordlist = ['a', 'about', 'above', 'after', 'again', 'ain', 'all', 'am', 'an',
              'and','any','are', 'as', 'at', 'be', 'because', 'been', 'before',
              'being', 'below', 'between','both', 'by', 'can', 'd', 'did', 'do',
@@ -73,10 +68,8 @@ stopwordlist = ['a', 'about', 'above', 'after', 'again', 'ain', 'all', 'am', 'an
 def preprocess(textdata):
     processedText = []
     
-    # Create Lemmatizer
     wordLemm = WordNetLemmatizer()
     
-    # Defining regex patterns.
     urlPattern        = r"((http://)[^ ]*|(https://)[^ ]*|( www\.)[^ ]*)"
     userPattern       = '@[^\s]+'
     alphaPattern      = "[^a-zA-Z0-9]"
@@ -86,9 +79,7 @@ def preprocess(textdata):
     for tweet in textdata:
         tweet = tweet.lower()
         
-        # Replace all URls with 'URL'
         tweet = re.sub(urlPattern,' URL',tweet)
-        # Replace all emojis.
         for emoji in emojis.keys():
             tweet = tweet.replace(emoji, "EMOJI" + emojis[emoji])        
         # Replace @USERNAME to 'USER'.
@@ -100,10 +91,7 @@ def preprocess(textdata):
         
         tweetwords = ''
         for word in tweet.split():
-            # Checking if the word is a stopword
-            #if word not in stopwordlist:
             if len(word)>1:
-                # Lemmatizing the word.
                 word = wordLemm.lemmatize(word)
                 tweetwords += (word+' ')
             
@@ -117,7 +105,7 @@ processedtext = preprocess(text)
 print(f'Text Preprocessing complete.')
 print(f'Time Taken: {round(time.time()-t)} seconds')
 
-data_neg = processedtext[:800000]
+'''data_neg = processedtext[:800000]
 plt.figure(figsize=(20, 20))
 wc_neg = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
 plt.imshow(wc_neg)
@@ -131,9 +119,8 @@ wc_pos = WordCloud(max_words=1000, width=1600, height=800, collocations=False).g
 plt.imshow(wc_pos)
 plt.axis('off')
 plt.title("Positive Tweets", fontsize=24)
-plt.show()
+plt.show()'''
 
-# Splitting the data in test and train (95% - 5% ratio)
 X_train, X_test, y_train, y_test = train_test_split(processedtext, sentiment, test_size = 0.05, random_state = 0)
 print(f'Data Split done.')
 
@@ -159,7 +146,6 @@ We're choosing Accuracy as our evaluation metric. We're also plotting the
 confusion matrix to get an understanding of how our model is performing on both classification types. '''
 
 def model_Evaluate(model, model_name):
-    # predict values for test dataset
     y_pred = model.predict(X_test)
 
     #evaluation metrics 
@@ -212,7 +198,6 @@ file = open('Sentiment-BNB.pickle','wb')
 pickle.dump(BNBmodel, file)
 file.close()
 
-#remaining pickle models and vectorizer 
 
 def load_models():
    
@@ -238,8 +223,6 @@ def predict(vectoriser, model, text):
     df = df.replace([0,1], ["Negative","Positive"])
     return df
 if __name__=="__main__":
-    # Loading the models.
-    #vectoriser, LRmodel = load_models()
     
     # Text to classify should be in a list.
     text = ["I hate twitter",
