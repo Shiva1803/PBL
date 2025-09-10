@@ -1,7 +1,13 @@
 # PBL Project: Sentiment analysis model for analying tweets on X
 <p> This ML model uses <strong>Logistic regression</strong> to analyze tweets and predict whether it's sentiment is positive or negative. 
-The project is trained on <a href = "https://www.kaggle.com/datasets/kazanova/sentiment140">Sentiment140</a> dataset and has been deployed via Streamlit.</p>
+  Side by side, one can see the stats with BernoulliNB and RandomForest aswell.
+The project was initially trained on <a href = "https://www.kaggle.com/datasets/kazanova/sentiment140">Sentiment140</a> dataset (see updates section) and has been deployed via Streamlit.
+  It also uses Flask API for the backend.
+</p>
 
+# Updates:
+After usign sentiment140, Scrapping and preprocessing of 250k+ tweets was done manually using text cleaning, normalization, and stopword removal to give it an edge over the sentiment140 dataset.
+Right now, the project is being upgraded to not just classify the sentiment, but the themes aswell (Political, Health, Finance).
 
 # Preview of the project
 <p align="center">
